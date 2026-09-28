@@ -1,0 +1,23 @@
+{
+  "name": "healthcare-patient-portal-access-tester",
+  "version": "1.0.0",
+  "description": "Healthcare Patient Portal Access Tester - Software Testing & RBAC Verification Project",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ..",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently -k -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "seed": "cd backend && npm run seed",
+    "test:backend": "cd backend && npm test",
+    "test:coverage": "cd backend && npm run test:coverage",
+    "test:cypress": "node scripts/run-cypress.js run",
+    "cypress:open": "node scripts/run-cypress.js open",
+    "build:frontend": "cd frontend && npm run build",
+    "test": "npm run test:backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "cypress": "^13.17.0"
+  }
+}

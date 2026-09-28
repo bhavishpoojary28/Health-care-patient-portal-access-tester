@@ -1,0 +1,25 @@
+{
+  "patientA": {
+    "username": "patientA",
+    "password": "Password123!",
+    "name": "John Doe",
+    "patientId": "P1001"
+  },
+  "patientB": {
+    "username": "patientB",
+    "password": "Password123!",
+    "name": "Jane Smith",
+    "patientId": "P1002"
+  },
+  "doctorAlice": {
+    "username": "dr_alice",
+    "password": "DoctorPass123!",
+    "name": "Dr. Alice Carter",
+    "doctorId": "D201"
+  },
+  "admin": {
+    "username": "admin",
+    "password": "AdminPass123!",
+    "name": "System Admin Sarah"
+  }
+}
