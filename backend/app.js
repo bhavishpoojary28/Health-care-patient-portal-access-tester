@@ -13,6 +13,10 @@ const testCaseRoutes = require('./routes/testCaseRoutes');
 const accessTestRoutes = require('./routes/accessTestRoutes');
 const auditLogRoutes = require('./routes/auditLogRoutes');
 
+const mongoose = require('mongoose');
+const { connectDB } = require('./config/db');
+const { seedInitialData } = require('./services/seedService');
+
 const app = express();
 
 app.use(cors());
@@ -21,6 +25,26 @@ app.use(express.json());
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
+
+// Auto-connect and seed DB on first request if running in serverless/cloud environment
+let isConnected = false;
+let isSeeding = false;
+app.use(async (req, res, next) => {
+  try {
+    if (mongoose.connection.readyState !== 1 && !isConnected) {
+      isConnected = true;
+      await connectDB();
+      if (!isSeeding) {
+        isSeeding = true;
+        await seedInitialData();
+      }
+    }
+    next();
+  } catch (err) {
+    console.error('[DB AutoConnect Error]:', err.message);
+    next();
+  }
+});
 
 app.get('/', (req, res) => {
   res.json({
