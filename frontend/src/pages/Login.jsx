@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { extractErrorMessage } from '../services/api';
 import { Activity, Lock, User, AlertCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const Login = () => {
@@ -21,11 +22,7 @@ export const Login = () => {
       await login(username, password);
       navigate('/');
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-        err.response?.data?.error ||
-        'Failed to log in. Please check your credentials.'
-      );
+      setError(extractErrorMessage(err, 'Failed to log in. Please check your credentials.'));
     } finally {
       setLoading(false);
     }
@@ -40,7 +37,7 @@ export const Login = () => {
       await quickSwitch(demo);
       navigate('/');
     } catch (err) {
-      setError('Failed to switch to demo account');
+      setError(extractErrorMessage(err, 'Failed to switch to demo account'));
     } finally {
       setLoading(false);
     }
@@ -69,7 +66,7 @@ export const Login = () => {
               <AlertCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
               <div>
                 <strong className="font-semibold block">Authentication Error</strong>
-                <span>{error}</span>
+                <span>{typeof error === 'string' ? error : (error?.message || JSON.stringify(error))}</span>
               </div>
             </div>
           )}

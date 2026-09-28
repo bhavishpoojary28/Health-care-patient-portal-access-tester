@@ -31,7 +31,7 @@ export const DemoCredentialsBanner = () => {
           <span className="text-slate-300 hidden sm:inline">
             Active Identity:
             <strong className="text-white ml-1 font-mono">
-              {isAuthenticated ? `${user?.name} (${user?.role.toUpperCase()}${user?.patientId ? ` - ${user?.patientId}` : ''}${user?.doctorId ? ` - ${user?.doctorId}` : ''})` : 'Not Logged In'}
+              {isAuthenticated ? `${user?.name || 'User'} (${user?.role ? user.role.toUpperCase() : 'USER'}${user?.patientId ? ` - ${user.patientId}` : ''}${user?.doctorId ? ` - ${user.doctorId}` : ''})` : 'Not Logged In'}
             </strong>
           </span>
         </div>

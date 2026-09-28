@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { patientAPI } from '../services/api';
+import { patientAPI, extractErrorMessage } from '../services/api';
 import {
   User,
   Heart,
@@ -39,11 +39,7 @@ export const Profile = () => {
         setFormData(res.data);
       } catch (err) {
         console.error('Error fetching patient profile:', err);
-        setError(
-          err.response?.data?.message ||
-          err.response?.data?.error ||
-          'Failed to load patient record. Access Denied (403 Forbidden).'
-        );
+        setError(extractErrorMessage(err, 'Failed to load patient record. Access Denied (403 Forbidden).'));
       } finally {
         setLoading(false);
       }
@@ -61,7 +57,7 @@ export const Profile = () => {
       setSavedSuccess(true);
       setTimeout(() => setSavedSuccess(false), 3000);
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to update patient profile');
+      setError(extractErrorMessage(err, 'Failed to update patient profile'));
     }
   };
 
@@ -82,7 +78,7 @@ export const Profile = () => {
         </div>
         <h2 className="text-xl font-bold text-slate-900 mb-2">Access Control Violation (403)</h2>
         <p className="text-sm text-rose-700 bg-rose-50 p-3.5 rounded-xl border border-rose-200 mb-4 font-mono text-left">
-          {error}
+          {typeof error === 'string' ? error : (error?.message || JSON.stringify(error))}
         </p>
         <p className="text-xs text-slate-500 leading-relaxed">
           The backend security filter verified that your current session does not own Patient ID <strong>{targetPatientId}</strong>. Cross-patient access attempts are logged in the security audit trail.

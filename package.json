@@ -12,8 +12,18 @@
     "test:coverage": "cd backend && npm run test:coverage",
     "test:cypress": "node scripts/run-cypress.js run",
     "cypress:open": "node scripts/run-cypress.js open",
+    "build": "cd frontend && npm install && npm run build",
     "build:frontend": "cd frontend && npm run build",
     "test": "npm run test:backend"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",

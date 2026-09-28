@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { extractErrorMessage } from '../services/api';
 import { Activity, Lock, User, Mail, Phone, Calendar, AlertCircle, ArrowRight } from 'lucide-react';
 
 export const Register = () => {
@@ -38,7 +39,7 @@ export const Register = () => {
       });
       navigate('/');
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed');
+      setError(extractErrorMessage(err, 'Registration failed'));
     } finally {
       setLoading(false);
     }
@@ -59,7 +60,7 @@ export const Register = () => {
           {error && (
             <div className="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-200 flex items-center gap-2 text-rose-700 text-sm">
               <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
-              <span>{error}</span>
+              <span>{typeof error === 'string' ? error : (error?.message || JSON.stringify(error))}</span>
             </div>
           )}
 

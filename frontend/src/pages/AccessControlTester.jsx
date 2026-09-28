@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { accessTestAPI } from '../services/api';
+import { accessTestAPI, extractErrorMessage } from '../services/api';
 import StatusBadge from '../components/StatusBadge';
 import {
   Sliders,
@@ -113,7 +113,7 @@ export const AccessControlTester = () => {
     } catch (err) {
       console.error('Test run failed', err);
       setTestResult({
-        error: err.response?.data?.error || err.message,
+        error: extractErrorMessage(err, 'Access test execution error'),
         status: 'FAIL',
         actualResult: 'EXECUTION ERROR',
         actualStatus: err.response?.status || 500,

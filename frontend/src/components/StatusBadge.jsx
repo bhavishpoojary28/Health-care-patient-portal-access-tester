@@ -2,7 +2,7 @@ import React from 'react';
 import { CheckCircle2, XCircle, AlertTriangle, Clock, ShieldCheck, ShieldAlert } from 'lucide-react';
 
 export const StatusBadge = ({ status, size = 'md' }) => {
-  const normalized = (status || '').toUpperCase();
+  const normalized = (typeof status === 'string' ? status : (status?.toString?.() || '')).toUpperCase();
 
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs font-semibold gap-1',

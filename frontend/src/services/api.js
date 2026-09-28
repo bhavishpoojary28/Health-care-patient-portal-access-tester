@@ -1,7 +1,39 @@
 import axios from 'axios';
 
+// Safely normalize the API base URL
+const getBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl || envUrl.trim() === '') {
+    return '/api';
+  }
+  const cleanUrl = envUrl.trim().replace(/\/+$/, '');
+  // If the user provided a full domain without /api (e.g., https://my-backend.railway.app), append /api
+  if (!cleanUrl.endsWith('/api') && !cleanUrl.startsWith('/')) {
+    return `${cleanUrl}/api`;
+  }
+  return cleanUrl;
+};
+
+// Safe error message extractor to guarantee string output and prevent React Error #31
+export const extractErrorMessage = (err, fallback = 'An unexpected error occurred') => {
+  if (!err) return fallback;
+  if (typeof err === 'string') return err;
+  const data = err.response?.data;
+  if (typeof data === 'string') return data;
+  if (data && typeof data === 'object') {
+    if (typeof data.message === 'string') return data.message;
+    if (typeof data.error === 'string') return data.error;
+    if (data.error && typeof data.error === 'object') {
+      if (typeof data.error.message === 'string') return data.error.message;
+      if (typeof data.error.error === 'string') return data.error.error;
+    }
+  }
+  if (typeof err.message === 'string') return err.message;
+  return fallback;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
